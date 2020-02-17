@@ -1,0 +1,213 @@
+<template>
+    <div class="login">
+        <van-row style="text-align: center;" class="img">
+            <van-col span="24" custom-class="dark">
+                <van-image
+                width="100"
+                height="100"
+                src="/assets/images/logo.png"
+                />
+            </van-col>
+        </van-row>
+        
+        <van-row>
+            <van-col span="24" custom-class="dark" >
+                <van-cell-group border="{{false}}">
+                    <van-field
+                        :value="user"
+                        custom-style="color:white;"
+                        label="账号"
+                        left-icon="/assets/images/user.png"
+                        placeholder="请输入账户"
+                        clearable
+                        bindinput="bindUser"
+                    />
+                    <van-field
+                        :value="password"
+                        type="password"
+                        custom-style="color:white;"
+                        label="密码"
+                        left-icon="/assets/images/pass.png"
+                        placeholder="请输入密码"
+                        clearable
+                        bindinput="bindPass"
+                    />
+                </van-cell-group>
+            </van-col>
+        </van-row>
+        <van-row>
+            <van-col span="24" custom-class="submit">
+                 <van-button type="info" block @click="fnLogin()">登录</van-button>
+            </van-col>
+        </van-row>
+        <van-row class="oper">
+            <van-col span="12" >
+                 <span  class="forget" @click="fnForget()">忘记密码？</span>
+            </van-col>
+             <van-col span="12" >
+                 <span  class="register" @click="fnRegister()">立即注册</span>
+            </van-col>
+        </van-row>
+        
+        <van-row>
+            <van-divider contentPosition="center" customStyle="color: #1989fa;border-color: #1989fa;">
+                其他方式登录
+            </van-divider>
+            <van-col span="24" style="text-align:center;">
+                <van-image
+                round
+                width="3rem"
+                height="3rem"
+                src="/assets/images/phone.png"
+                @click="fnPhoneLogin()"
+                />
+                <van-image
+                style="margin-left:10px"
+                round
+                width="3rem"
+                height="3rem"
+                src="/assets/images/wechat.png"
+                @click="fnWechatLogin()"
+                />
+            </van-col>
+        </van-row>
+        
+        <van-toast id="van-toast" />
+    </div>
+</template>
+<script>
+  import wepy from '@wepy/core'
+  import eventHub from '../../common/eventHub';
+  import { mapState } from '@wepy/x';
+  import store from '../../store';
+  import Toast from '../../components/vant/toast/toast';
+
+  wepy.page(
+      {
+          data:{
+                user:'',
+                password:''
+          },
+          methods:{
+              bindUser(e){
+                  this.user =e.$wx.detail;
+              },
+              bindPass(e){
+                  this.password =e.$wx.detail;
+                  console.log(e.$wx)
+              },
+              fnLogin(){
+                  if(this.user==""){
+                      Toast('请输入账号');
+                      return;
+                  }
+                  if(this.password==""){
+                      Toast('请输入密码');
+                      return;
+                  }
+                  Toast('登录成功');
+                  setTimeout(function(){
+                        wx.redirectTo({
+                            url: '../../pages/index/index'  //跳转地址
+                        })
+                  },300)
+              },
+              fnForget(){
+                // wx.redirectTo({
+                //     url: 'pages/login/forgetPass'
+                // })
+                // this.$navigate({url:"../../pages/login/forgetPass"});
+                wx.navigateTo({
+                    url: '../../pages/login/forgetPass'  //跳转地址
+                })
+              },
+              fnRegister(){
+                // wx.redirectTo({
+                //     url: 'pages/login/forgetPass'
+                // })
+                // this.$navigate({url:"../../pages/login/forgetPass"});
+                wx.navigateTo({
+                    url: '../../pages/login/register'  //跳转地址
+                })
+              },
+              fnPhoneLogin(){
+                wx.redirectTo({
+                    url: '../../pages/login/phoneLogin'  //跳转地址
+                })
+              },
+              fnWechatLogin(){
+                    
+                    // wx.getUserInfo({
+                    //   success (res) {
+                    //         console.log(res.userInfo)
+                    //     }
+                    // })
+                    wx.authorize({
+                        scope: 'scope.record',
+                        success () {
+                           console.log('aaaa')
+                           wx.getUserInfo({
+                            success (res) {
+                                console.log(res)
+                                // self.userInfo = res.userInfo;
+                            },
+                            fail(err){
+                                console.error(err);
+                                
+                            }
+                        });
+                            // 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
+                        },
+                        fail(){
+                            console.error("aaa");
+                            
+                        }
+                    })
+              }
+          },
+
+      }
+  )
+</script>
+<style lang="less">
+   
+    .login{
+        padding: 20px 8px;
+    }
+    .img .van-row{
+        margin-bottom: 20px;
+    }
+    .img .van-icon--image {
+        width: 1em;
+        height: 1.3em;
+    }
+
+    .van-cell {
+        background-color: transparent !important;
+    }
+    .oper .van-row{
+        margin-top: 15px;
+    }
+    .forget{
+        color: #ddd;
+    }
+    .register{
+        float:right;color: rgb(0, 174, 255);;
+    }
+    
+</style>
+<config>
+{
+    usingComponents: {
+        'van-button':'../../components/vant/button/index',
+        "van-field":"../../components/vant/field/index",
+        "van-image": "../../components/vant/image/index",
+        "van-row": "../../components/vant/row/index",
+        "van-col": "../../components/vant/col/index",
+        "van-divider": "../../components/vant/divider/index",
+        "van-cell-group": "../../components/vant/cell-group/index",
+        "van-toast": "../../components/vant/toast/index"
+    },
+    navigationBarTitleText: '账户登录',
+}
+</config>

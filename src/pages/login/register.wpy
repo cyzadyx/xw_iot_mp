@@ -1,0 +1,121 @@
+<template>
+    <div class="register">
+        <div v-show="stepOne">
+            <van-row>
+                <van-col span="24" custom-class="dark">
+                    <van-cell-group border="{{false}}">
+                        <van-field
+                            value="{{ sms }}"
+                            center
+                            custom-style="color:white;"
+                            clearable
+                            left-icon="/static/images/phone.png"
+                            placeholder="请输入手机号"
+                            use-button-slot
+                        >
+                            <van-button slot="button" plain hairline  size="small" type="info" custom-class="button">发送验证码</van-button>
+                        </van-field>
+                        <van-field
+                            :value="password"
+                            custom-style="color:white;"
+                            left-icon="/assets/images/safe.png"
+                            placeholder="请输入验证码"
+                            clearable
+                        />
+                    </van-cell-group>
+                </van-col>
+            </van-row>
+            <van-row>
+                <van-col span="24" custom-class="submit">
+                    <van-button type="info" block @click="fnStepOne()">下一步</van-button>
+                </van-col>
+            </van-row>
+        </div>
+        <div v-show="stepTwo">
+            <van-row>
+                <van-col span="24" custom-class="dark">
+                    <van-field
+                        :value="user"
+                        label="用户名"
+                        custom-style="color:white;"
+                        placeholder="请输入用户名"
+                        clearable
+                    />
+                    <van-field
+                        :value="password"
+                        label="密码"
+                        custom-style="color:white;"
+                        placeholder="请输入密码"
+                        clearable
+                    />
+                    <van-field
+                        :value="password"
+                        label="确认密码"
+                        custom-style="color:white;"
+                        placeholder="请输入确认密码"
+                        clearable
+                    />
+                </van-col>
+            </van-row>
+            <van-row>
+                <van-col span="24" custom-class="submit">
+                    <van-button type="info" block @click="fnCreate()">创建账户</van-button>
+                </van-col>
+            </van-row>
+        </div>
+        <van-toast id="van-toast" />
+    </div>
+</template>
+<script>
+ import wepy from '@wepy/core'
+  import eventHub from '../../common/eventHub';
+  import { mapState } from '@wepy/x';
+  import store from '../../store';
+  import Toast from '../../components/vant/toast/toast';
+  wepy.page(
+      {
+          data:{
+              stepOne:true,
+              stepTwo:false,
+              user:'',
+              password:''
+          },
+          methods:{
+              fnStepOne(){
+                  this.stepTwo=true ;
+                  this.stepOne=false;
+              },
+              fnCreate(){
+                  Toast.success('账户创建成功');
+                  setTimeout(function(){
+                        wx.navigateTo({
+                            url: '../../pages/login/login'  //跳转地址
+                        })
+                  },300)
+                  
+              }
+          }
+      }
+  )
+</script>
+<style lang="less" scoped>
+    .van-button--plain.van-button--info{
+        background-color: transparent;
+        border: none !important;
+    }
+</style>
+<config>
+{
+    usingComponents: {
+        'van-button':'../../components/vant/button/index',
+        "van-field":"../../components/vant/field/index",
+        "van-image": "../../components/vant/image/index",
+        "van-row": "../../components/vant/row/index",
+        "van-col": "../../components/vant/col/index",
+        "van-divider": "../../components/vant/divider/index",
+        "van-cell-group": "../../components/vant/cell-group/index",
+        "van-toast": "../../components/vant/toast/index"
+    },
+    navigationBarTitleText: '账户注册',
+}
+</config>

@@ -1,0 +1,87 @@
+<template>
+    <div class="forgetpass">
+        <van-row>
+            <van-col span="24" custom-class="dark">
+                <van-cell-group border="{{false}}">
+                    <van-field
+                        value="{{ sms }}"
+                        center
+                        custom-style="color:white;"
+                        clearable
+                        label="手机号"
+                        placeholder="请输入手机号"
+                        use-button-slot
+                    >
+                        <van-button slot="button" plain hairline  size="small" type="info" custom-class="button">发送验证码</van-button>
+                    </van-field>
+                    <van-field
+                        :value="user"
+                        label="验证码"
+                        custom-style="color:white;"
+                        placeholder="请输入验证码"
+                        clearable
+                    />
+                    
+                    <van-field
+                        :value="password"
+                        label="新密码"
+                        custom-style="color:white;"
+                        placeholder="请输入新密码"
+                        clearable
+                    />
+                    <van-field
+                        :value="password"
+                        label="确认密码"
+                        custom-style="color:white;"
+                        placeholder="请输入确认密码"
+                        clearable
+                    />
+                    
+                </van-cell-group>
+            </van-col>
+        </van-row>
+        <van-row>
+            <van-col span="24" custom-class="submit">
+                 <van-button type="info" block >重置密码</van-button>
+            </van-col>
+        </van-row>
+    </div>
+</template>
+<script>
+ import wepy from '@wepy/core'
+  import eventHub from '../../common/eventHub';
+  import { mapState } from '@wepy/x';
+  import store from '../../store';
+
+  wepy.page(
+      {
+          data:{
+              user:'',
+              password:''
+          }
+      }
+  )
+</script>
+<style lang="less" scoped>
+    .submit{
+        margin-top: 30px;
+    }
+    .van-button--plain.van-button--info{
+        background-color: transparent;
+        border: none !important;
+    }
+</style>
+<config>
+{
+    usingComponents: {
+        'van-button':'../../components/vant/button/index',
+        "van-field":"../../components/vant/field/index",
+        "van-image": "../../components/vant/image/index",
+        "van-row": "../../components/vant/row/index",
+        "van-col": "../../components/vant/col/index",
+        "van-divider": "../../components/vant/divider/index",
+        "van-cell-group": "../../components/vant/cell-group/index"
+    },
+    navigationBarTitleText: '找回密码',
+}
+</config>

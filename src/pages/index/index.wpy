@@ -1,0 +1,64 @@
+<template>
+    <div class="register">
+        <van-tabbar active="{{ active }}" bind:change="onChange">
+            <van-tabbar-item icon="home-o">首页</van-tabbar-item>
+            <van-tabbar-item icon="search">设备</van-tabbar-item>
+            <van-tabbar-item icon="friends-o">扫描</van-tabbar-item>
+            <van-tabbar-item icon="friends-o">告警</van-tabbar-item>
+            <van-tabbar-item icon="setting-o">我的</van-tabbar-item>
+        </van-tabbar>
+        <van-toast id="van-toast" />
+    </div>
+</template>
+<script>
+ import wepy from '@wepy/core'
+  import eventHub from '../../common/eventHub';
+  import { mapState } from '@wepy/x';
+  import store from '../../store';
+  import Toast from '../../components/vant/toast/toast';
+  wepy.page(
+      {
+          data:{
+              stepOne:true,
+              stepTwo:false,
+              user:'',
+              password:''
+          },
+          methods:{
+              fnStepOne(){
+                  this.stepTwo=true ;
+                  this.stepOne=false;
+              },
+              fnCreate(){
+                  Toast.success('账户创建成功');
+                  setTimeout(function(){
+                        wx.navigateTo({
+                            url: '../../pages/login/login'  //跳转地址
+                        })
+                  },300)
+                  
+              }
+          }
+      }
+  )
+</script>
+<style lang="less" scoped>
+
+</style>
+<config>
+{
+    usingComponents: {
+        'van-button':'../../components/vant/button/index',
+        "van-field":"../../components/vant/field/index",
+        "van-image": "../../components/vant/image/index",
+        "van-row": "../../components/vant/row/index",
+        "van-col": "../../components/vant/col/index",
+        "van-divider": "../../components/vant/divider/index",
+        "van-cell-group": "../../components/vant/cell-group/index",
+        "van-toast": "../../components/vant/toast/index",
+        "van-tabbar": "../../components/vant/tabbar/index",
+        "van-tabbar-item": "../../components/vant/tabbar-item/index"
+    },
+    navigationBarTitleText: '首页',
+}
+</config>
